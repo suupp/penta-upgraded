@@ -1,0 +1,41 @@
+<html>
+<head>
+  <script type="text/javascript" src="grid.js"></script>
+  <script type="text/javascript" src ="new.js"></script>
+  <script type="text/javascript" src ="solver.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.js"></script>
+</head>
+<body>
+<canvas id="myCanvas" width="600" height="600"></canvas>
+<script type="text/javascript">
+   var x = prompt('Enter board width (2 - 15)','');
+   var y = prompt('Enter board height (2 - 10)','');
+   x = Number(x);
+   y = Number(y);
+   // set canvas height based on canvas width in order to have square cells
+   var canvas = document.getElementById("myCanvas");
+   canvas.height=canvas.width/x*y;
+// create a pointer to canvas image (needed for isRectEmpty function)
+   var ctx = canvas.getContext("2d");
+// create brick image for static blocks
+
+    cellWidth = canvas.width/x;
+    cellHeight = canvas.height/y;
+
+
+</script>
+<p>
+<script type="text/javascript">
+  generateRandomGrid();
+</script>
+<input type="button" value="ADD BLOCK" onclick="fillRandomRect(x,y); staticRects++; if ((BoardWidth*BoardHeight-staticRects) % 5 == 0) {document.getElementById('SolveButton').disabled = false} else {document.getElementById('SolveButton').disabled = true}">
+<input type="button" id="SolveButton" value="SOLVE!" onclick="solve()">
+<input type="button" value="RESET" onclick="resetCanvas()">
+<input type="button" value="RANDOM FIELD" onclick="generateRandomGrid()">
+<input type="button" value="PLAIN FIELD" onclick="resetCanvas()">
+
+</p>
+
+</body>
+</html>
