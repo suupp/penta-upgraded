@@ -7,6 +7,7 @@ function checkEmptyCell(nx, ny, array) {
 }
 
 function firstEmptyCell(array) {
+  console.log(array);
   for (var xx = 0; xx < array.length; xx=xx+1) {
     for (var yy = 0; yy < array[xx].length; yy=yy+1) {
       if (array[xx][yy] == 1) {
@@ -17,39 +18,109 @@ function firstEmptyCell(array) {
    return false;
 }
 
-function drawFigure(sx, sy, figure, array) {
-  i = Math.floor(Math.random()*63);
-  fit = false;
-  while (fit != 5) {
-    figure[i].forEach(function(elem) {
-      if ((sx+elem[0] > x-1) || (sx+elem[0] < 0) || (sy+elem[1] > y-1) || (sy+elem[1] < 0) || (array[sx+elem[0]][sy+elem[1]] == 0)) {
-        i = Math.floor(Math.random()*63);
-        fit = 0;
-      } else { fit++ }
-    });
+function determineFigureSet(figure, array) {
+  for (var sx = 0; sx < array.length; sx++) {
+    for (var sy = 0; sy < array[sx].length; sy++) {
+      i = Math.floor(Math.random()*62);
+      k = i;
+      fitnum=0;
+      for (i; i < figure.length; i++) {
+          for (var j = 0; j < figure[i].length; j++) {
+            if (figure[i][j][0]+sx >= 0 && figure[i][j][1] + sy >=0 && figure[i][j][0] + sx < x && figure[i][j][1] + sy < y) {
+             if (array[figure[i][j][0] + sx][figure[i][j][1] + sy] == 1)  {
+              fitnum ++;
+              }
+            }
+          }
+          if (fitnum == 5) {
+            figureSet.push(figure[i]);
+          }
+          fitnum = 0;
+        }
+        fitnum = 0;
+
+      for (k; k >= 0; k--) {
+            for (var j = 0; j < figure[k].length; j++) {
+              if (figure[k][j][0]+sx >= 0 && figure[k][j][1] + sy >=0 && figure[k][j][0]+sx < x && figure[k][j][1] + sy < y){
+                if (array[figure[k][j][0] + sx][figure[k][j][1] + sy] == 1) {
+                fitnum ++;
+                }
+              }
+            }
+            if (fitnum == 5) {
+              figureSet.push(figure[k]);
+            }
+              fitnum = 0;
+          }
+          return false;
+    }
   }
-if (fit) {
-  figure[i].forEach(function(elem) {
-    console.log(figure[i]);
-    fillRectUpd(sx+elem[0], sy+elem[1], cellWidth-1, cellHeight-1, 'black');
-  });
-  return true;
-} else {
-  return false;
-}
+
 }
 
+function drawFigure(sx, sy, figure, array) {
+  i = Math.floor(Math.random()*62);
+  k = i;
+  fitnum=0;
+for (i; i < figure.length; i++) {
+    for (var j = 0; j < figure[i].length; j++) {
+      if (figure[i][j][0]+sx >= 0 && figure[i][j][1] + sy >=0 && figure[i][j][0] + sx < x && figure[i][j][1] + sy < y) {
+       if (array[figure[i][j][0] + sx][figure[i][j][1] + sy] == 1)  {
+        fitnum ++;
+        }
+      }
+    }
+    if (fitnum == 5) {
+      color = randomColor();
+      for (var fini = 0; fini < figure[i].length; fini++) {
+        array[figure[i][fini][0] + sx][figure[i][fini][1] + sy] = color;
+      }
+      return true;
+    }
+    fitnum = 0;
+  }
+  fitnum = 0;
+
+for (k; k >= 0; k--) {
+      for (var j = 0; j < figure[k].length; j++) {
+        if (figure[k][j][0]+sx >= 0 && figure[k][j][1] + sy >=0 && figure[k][j][0]+sx < x && figure[k][j][1] + sy < y){
+          if (array[figure[k][j][0] + sx][figure[k][j][1] + sy] == 1) {
+          fitnum ++;
+          }
+        }
+      }
+      if (fitnum == 5) {
+        color = randomColor();
+        for (var fini = 0; fini < figure[k].length; fini++) {
+          array[figure[k][fini][0] + sx][figure[k][fini][1] + sy] = color;
+        }
+        return true;
+      }
+        fitnum = 0;
+    }
+    return false;
+}
+
+function startSolve() {
+if (!solve()) {
+  startSolve();
+  }
+}
+
+
 function solve() {
-curcell = firstEmptyCell(cellsArray);
-   if (curcell != false) {
-     placed = drawFigure(curcell[0], curcell[1], pentas, cellsArray);
-   } else {
-     console.log("done!");
+  for (var xx = 0; xx < cellsArray.length; xx=xx+1) {
+    for (var yy = 0; yy < cellsArray[xx].length; yy=yy+1) {
+      if (cellsArray[xx][yy] == 1) {
+        if (!drawFigure(xx, yy, figureSet, cellsArray)) {
+          clearGrid(cellsArray);
+          return false;
+        }
+      }
+     }
    }
-   if (!placed) {
-     fillCanvas(cellsArray);
-     solve();
-   }
+   fillCanvas(cellsArray);
+   return true;
 }
 
 
@@ -57,7 +128,7 @@ curcell = firstEmptyCell(cellsArray);
 
 // 4 vaiations of L figure
 pentas.push([[0,0], [1,0], [2,0], [3,0], [3,1]]);
-pentas.push([[0,0], [0,1], [0,2], [0,3], [-1,3]]);
+pentas.push([[0,0], [1,1], [1,2], [1,3], [1,0]]);
 pentas.push([[0,0], [0,1], [1,1], [2,1], [3,1]]);
 pentas.push([[0,0], [1,0], [0,1], [0,2], [0,3]]);
 
@@ -70,16 +141,16 @@ pentas.push([[0,0], [1,0], [1,1], [1,2], [1,3]]);
 
 // 8 vaiations of F figure
 pentas.push([[0,0], [1,0], [1,-1], [2,-1], [1,1]]);
-pentas.push([[0,0], [0,1], [-1,1], [1,1], [1,2]]);
+pentas.push([[0,0], [1,0], [1,1], [2,0], [2,1]]);
 pentas.push([[0,0], [0,1], [1,1], [1,2], [2,1]]);
-pentas.push([[0,0], [0,1], [1,1], [0,2], [-1,2]]);
+pentas.push([[0,0], [1,0], [1,1], [1,2], [2,1]]);
 pentas.push([[0,0], [1,0], [1,-1], [2,0], [0,1]]);
 pentas.push([[0,0], [1,0], [1,1], [2,1], [1,2]]);
 pentas.push([[0,0], [1,0], [1,1], [1,-1], [2,1]]);
 pentas.push([[0,0], [1,0], [1,1], [2,0], [2,-1]]);
 
 // 8 vaiations of N figure
-pentas.push([[0,0], [0,-1], [0,-2], [1,0], [1,1]]);
+pentas.push([[0,0], [0,1], [0,2], [1,2], [1,3]]);
 pentas.push([[0,0], [1,0], [1,-1], [2,-1], [3,-1]]);
 pentas.push([[0,0], [1,0], [2,0], [2,-1], [3,-1]]);
 pentas.push([[0,0], [0,1], [1,1], [1,2], [1,3]]);
@@ -91,9 +162,9 @@ pentas.push([[0,0], [0,1], [1,0], [1,-1], [1,-2]]);
 // 8 vaiations of P figure
 pentas.push([[0,0], [1,0], [2,0], [0,1], [1,1]]);
 pentas.push([[0,0], [1,0], [0,1], [1,1], [1,2]]);
-pentas.push([[0,0], [1,1], [0,1], [0,1], [1,2]]);
+pentas.push([[0,0], [1,1], [0,1], [0,2], [1,2]]);
 pentas.push([[0,0], [1,0], [2,0], [1,-1], [2,-1]]);
-pentas.push([[0,0], [0,-1], [0,-2], [1,-1], [1,-2]]);
+pentas.push([[0,0], [0,1], [0,2], [1,0], [1,1]]);
 pentas.push([[0,0], [1,0], [2,0], [1,1], [2,1]]);
 pentas.push([[0,0], [1,0], [0,1], [1,1], [2,1]]);
 pentas.push([[0,0], [0,1], [1,1], [1,0], [1,-1]]);
@@ -102,15 +173,15 @@ pentas.push([[0,0], [0,1], [1,1], [1,0], [1,-1]]);
 pentas.push([[0,0], [0,1], [0,2], [0,3], [1,2]]);
 pentas.push([[0,0], [1,0], [2,0], [3,0], [1,1]]);
 pentas.push([[0,0], [1,0], [2,0], [3,0], [2,-1]]);
-pentas.push([[0,0], [0,1], [0,2], [0,3], [-1,1]]);
+pentas.push([[0,0], [1,1], [1,0], [1,1], [1,2]]);
 pentas.push([[0,0], [1,0], [2,0], [3,0], [2,1]]);
-pentas.push([[0,0], [0,1], [0,2], [0,3], [-1,2]]);
+pentas.push([[0,0], [1,1], [1,0], [1,-1], [1,-2]]);
 pentas.push([[0,0], [0,1], [0,2], [0,3], [1,1]]);
-pentas.push([[0,0], [0,1], [-1,1], [1,1], [2,1]]);
+pentas.push([[0,0], [1,0], [1,-1], [2,0], [3,0]]);
 
 // 4 vaiations of T figure
 pentas.push([[0,0], [1,0], [2,0], [1,1], [1,2]]);
-pentas.push([[0,0], [0,1], [0,2], [-1,2], [1,2]]);
+pentas.push([[0,0], [1,-1], [1,0], [1,-2], [2,0]]);
 pentas.push([[0,0], [1,0], [2,0], [2,-1], [2,1]]);
 pentas.push([[0,0], [0,1], [0,2], [1,1], [2,1]]);
 
@@ -134,7 +205,7 @@ pentas.push([[0,0], [0,1], [1,0], [1,-1], [2,-1]]);
 
 // 4 vaiations of Z figure
 pentas.push([[0,0], [1,0], [1,1], [1,2], [2,2]]);
-pentas.push([[0,0], [0,1], [0,2], [-1,2], [1,0]]);
+pentas.push([[0,0], [1,-1], [1,0], [1,-2], [2,-2]]);
 pentas.push([[0,0], [1,0], [2,0], [2,-1], [0,1]]);
 pentas.push([[0,0], [0,1], [1,1], [2,1], [2,2]]);
 

@@ -1,4 +1,4 @@
-
+figureSet = [];
 function generateRandomGrid() {
   //created an array for storying cell values
 cellsArray = create2dArray(x, y);
@@ -30,6 +30,8 @@ for (var xx = 0; xx < x; xx=xx+1) {
   if (checkAvailabilityOfCanvas(cellsArray)) {
   //filled the canvas with white and black cells based on values in cellsArray
     fillCanvas(cellsArray);
+    determineFigureSet(pentas, cellsArray);
+    console.log(figureSet);
    } else {
     generateRandomGrid();
   }

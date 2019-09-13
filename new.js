@@ -10,9 +10,12 @@ function fillCanvas(array) {
     for (var yy = 0; yy < array[xx].length; yy=yy+1) {
       if(array[xx][yy] == 1) {
          fillRectUpd(xx*cellWidth, yy*cellHeight, cellWidth-1, cellHeight-1, "white");
-      } else {
+      } else if (array[xx][yy] == 0 ){
         fillRectUpd(xx*cellWidth, yy*cellHeight, cellWidth-1, cellHeight-1, "black");
-        }
+      }
+        else {
+        fillRectUpd(xx*cellWidth, yy*cellHeight, cellWidth-1, cellHeight-1, array[xx][yy]);
+      }
      }
    }
 }
@@ -29,8 +32,17 @@ function checkAvailabilityOfCanvas(array) {
    if ((total % 5 != 0) || (total == 0) || (total == x*y)){
       multfive = false;
    }
-   console.log(total);
    return multfive;
+}
+
+function clearGrid(array) {
+  for (var xx = 0; xx < array.length; xx=xx+1) {
+    for (var yy = 0; yy < array[xx].length; yy=yy+1) {
+      if ((array[xx][yy] != 1) && (array[xx][yy] != 0)) {
+        array[xx][yy] = 1;
+      }
+     }
+   }
 }
 
 //canvas reset function for making canvas color plain black to draw cells on it
@@ -48,7 +60,7 @@ function countNeighbours(nx, ny, array) {
             }
         }
      }
-     total = total + Math.random()*(4)-2
+     total = total + Math.random()*(4)-2;
   return total;
 }
 
