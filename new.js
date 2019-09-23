@@ -13,19 +13,36 @@ function fillCanvas(array) {
       } else if (array[xx][yy] == 0 ){
         fillRectUpd(xx*cellWidth, yy*cellHeight, cellWidth-1, cellHeight-1, "black");
       }
-        else {
+        else if (array[xx][yy] == 2){
+        fillRectUpd(xx*cellWidth, yy*cellHeight, cellWidth-1, cellHeight-1, "red");
+      } else if (array[xx][yy] == 3) {
+        fillRectUpd(xx*cellWidth, yy*cellHeight, cellWidth-1, cellHeight-1, "green");
+      } else {
         fillRectUpd(xx*cellWidth, yy*cellHeight, cellWidth-1, cellHeight-1, array[xx][yy]);
       }
      }
    }
 }
-
+function fillableCellCount(array) {
+  count = 0;
+  for (var xx = 0; xx < array.length; xx=xx+1) {
+    for (var yy = 0; yy < array[xx].length; yy=yy+1) {
+      if(array[xx][yy] == 1 || array[xx][yy] == 2 || array[xx][yy] == 3) {
+        count++;
+      }
+     }
+   }
+   return count;
+}
 //function that checks if total amount of white cells is multiple to five and if canvas is not plain white or black
 function checkAvailabilityOfCanvas(array) {
   multfive = true;
   total = 0;
   for (var xx = 0; xx < array.length; xx=xx+1) {
     for (var yy = 0; yy < array[xx].length; yy=yy+1) {
+      if (array[xx][yy] == 3 || array[xx][yy] == 2) {
+        total = total + 1;
+      }
          total = total + array[xx][yy];
      }
    }
@@ -35,7 +52,7 @@ function checkAvailabilityOfCanvas(array) {
    return multfive;
 }
 
-function clearGrid(array) {
+function clearGrid(array, needDraw) {
   for (var xx = 0; xx < array.length; xx=xx+1) {
     for (var yy = 0; yy < array[xx].length; yy=yy+1) {
       if ((array[xx][yy] != 1) && (array[xx][yy] != 0)) {
@@ -43,6 +60,10 @@ function clearGrid(array) {
       }
      }
    }
+   if (needDraw = true) {
+     fillCanvas(array);
+   }
+   
 }
 
 //canvas reset function for making canvas color plain black to draw cells on it
