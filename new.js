@@ -63,7 +63,6 @@ function clearGrid(array, needDraw) {
    if (needDraw = true) {
      fillCanvas(array);
    }
-   
 }
 
 //canvas reset function for making canvas color plain black to draw cells on it

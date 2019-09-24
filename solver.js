@@ -99,7 +99,8 @@ clearGrid(array, true)
 return nset;
 }
 
-function drawFigure(sx, sy, figure, array) {
+function drawFigure(sx, sy, figurear, array) {
+  var figure = Array.from(figurear);
   i = Math.floor(Math.random()*(figure.length-1));
   k = i;
   fitnum=0;
@@ -116,6 +117,10 @@ for (i; i < figure.length; i++) {
       for (var fini = 0; fini < figure[i].length; fini++) {
         array[figure[i][fini][0] + sx][figure[i][fini][1] + sy] = color;
       }
+      for (var some = i; some < figure.length; some++) {
+        figure[some] = figure[some+1];
+      }
+      figure.length = figure.length - 1;
       return true;
     }
     fitnum = 0;
@@ -135,6 +140,10 @@ for (k; k >= 0; k--) {
         for (var fini = 0; fini < figure[k].length; fini++) {
           array[figure[k][fini][0] + sx][figure[k][fini][1] + sy] = color;
         }
+        for (var some = k; some < figure.length; some++) {
+          figure[some] = figure[some+1];
+        }
+        figure.length = figure.length - 1;
         return true;
       }
         fitnum = 0;

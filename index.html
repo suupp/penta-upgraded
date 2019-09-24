@@ -29,7 +29,6 @@
 <script type="text/javascript">
   generateRandomGrid();
 </script>
-<input type="button" value="ADD BLOCK" onclick="fillRandomRect(x,y); staticRects++; if ((BoardWidth*BoardHeight-staticRects) % 5 == 0) {document.getElementById('SolveButton').disabled = false} else {document.getElementById('SolveButton').disabled = true}">
 <input type="button" id="SolveButton" value="SOLVE!" onclick="startSolve()">
 <input type="button" value="RESET" onclick="clearGrid(cellsArray, true)">
 <input type="button" value="RANDOM FIELD" onclick="generateRandomGrid()">
