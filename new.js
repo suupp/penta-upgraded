@@ -72,18 +72,33 @@ fillRectUpd(0, 0, canvas.width, canvas.height, "black");
 
 //function that sums values of 8 adjacent cells of particular cell
 function countNeighbours(nx, ny, array) {
-  total = 0;
+  var total = 0;
   for (var xx = nx-1; xx <= nx+1; xx=xx+1) {
     for (var yy = ny-1; yy <= ny+1; yy=yy+1) {
           if ((xx >= 0) && (yy >=0) && (xx < x) && (yy < y)){
               total = total + array[xx][yy];
-            }
+          }
         }
      }
      total = total + Math.random()*(4)-2;
   return total;
 }
 
+function countNeighboursForSolve(nx, ny, array) {
+  var total = 0;
+  for (var xx = nx-1; xx <= nx+1; xx=xx+1) {
+    for (var yy = ny-1; yy <= ny+1; yy=yy+1) {
+          if ((xx >= 0) && (yy >=0) && (xx < x) && (yy < y)){
+            if (array[xx][yy] != 0 && array[xx][yy] != 1) {
+              total = total + 1;
+            } else {
+            total = total + array[xx][yy];
+          }
+          }
+        }
+     }
+  return total;
+}
 //simple function to create 2d array for any purposes
 function create2dArray(c, r) {
 var newArray = new Array(c);

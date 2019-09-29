@@ -1,6 +1,7 @@
 figureSet = [];
 
 function generateRandomGrid() {
+  var neighbours;
   //created an array for storying cell values
 cellsArray = create2dArray(x, y);
 //reset canvas

@@ -101,6 +101,7 @@ return nset;
 
 function drawFigure(sx, sy, figurear, array) {
   var figure = Array.from(figurear);
+  var color;
   i = Math.floor(Math.random()*(figure.length-1));
   k = i;
   fitnum=0;
@@ -151,6 +152,44 @@ for (k; k >= 0; k--) {
     return false;
 }
 
+function drawFigureBetter(sx, sy, figurear, array) {
+  var figure = Array.from(figurear);
+  var maxnum = 0;
+  var fl = 0;;
+  var figind;
+  var neighbournum;
+  console.log(figurear, figureSet);
+  for (var i = 0; i < figure.length; i++) {
+    neighbournum = 0;
+    fl = 0;
+    for (var j = 0; j < figure[i].length; j++) {
+      if (fl == 0) {
+      if (figure[i][j][0]+sx >= 0 && figure[i][j][1] + sy >=0 && figure[i][j][0]+sx < x && figure[i][j][1] + sy < y && array[figure[i][j][0]+sx][figure[i][j][1]+sy] == 1){
+        neighbournum = neighbournum + countNeighboursForSolve(figure[i][j][0]+sx, figure[i][j][1]+sy, array);
+      } else {
+        fl = 1;
+      }
+    }
+  }
+    if (neighbournum > maxnum) {
+      figind = i;
+      maxnum = neighbournum;
+    }
+  }
+color = randomColor();
+for (var i = 0; i < figure[figind].length; i++) {
+    if (array[figure[figind][i][0]+sx][figure[figind][i][1]+sy] == 1 ) {
+      array[figure[figind][i][0]+sx][figure[figind][i][1]+sy] = color;
+    } else return false;
+  }
+  for (var j = figind; j < figure.length; j++) {
+    figure[j] = figure[j+1];
+  }
+  figure.length = figure.length - 1;
+  figureSet = Array.from(figure);
+  return true;
+}
+
 function startSolve() {
 if (!solve()) {
   startSolve();
@@ -162,7 +201,7 @@ function solve() {
   for (var xx = 0; xx < cellsArray.length; xx=xx+1) {
     for (var yy = 0; yy < cellsArray[xx].length; yy=yy+1) {
       if (cellsArray[xx][yy] == 1) {
-        if (!drawFigure(xx, yy, figureSet, cellsArray)) {
+        if (!drawFigureBetter(xx, yy, figureSet, cellsArray)) {
           clearGrid(cellsArray, false);
           return false;
         }
