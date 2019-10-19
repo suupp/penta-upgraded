@@ -122,6 +122,7 @@ for (i; i < figure.length; i++) {
         figure[some] = figure[some+1];
       }
       figure.length = figure.length - 1;
+      figureSet = Array.from(figure);
       return true;
     }
     fitnum = 0;
@@ -145,6 +146,7 @@ for (k; k >= 0; k--) {
           figure[some] = figure[some+1];
         }
         figure.length = figure.length - 1;
+        figureSet = Array.from(figure);
         return true;
       }
         fitnum = 0;
@@ -191,6 +193,8 @@ for (var i = 0; i < figure[figind].length; i++) {
 }
 
 function startSolve() {
+  figureSet = Array.from(oldFSet);
+  oldFSet = Array.from(figureSet);
 if (!solve()) {
   startSolve();
   }
@@ -201,7 +205,7 @@ function solve() {
   for (var xx = 0; xx < cellsArray.length; xx=xx+1) {
     for (var yy = 0; yy < cellsArray[xx].length; yy=yy+1) {
       if (cellsArray[xx][yy] == 1) {
-        if (!drawFigureBetter(xx, yy, figureSet, cellsArray)) {
+        if (!drawFigure(xx, yy, figureSet, cellsArray)) {
           clearGrid(cellsArray, false);
           return false;
         }

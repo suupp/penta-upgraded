@@ -36,6 +36,7 @@ for (var xx = 0; xx < x; xx=xx+1) {
     while (figureSet.length != fillableCellCount(cellsArray) / 5) {
       figureSet = determineFigureSet(pentas, cellsArray);
     }
+    oldFSet = Array.from(figureSet);
    } else {
     generateRandomGrid();
   }
