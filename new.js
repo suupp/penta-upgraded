@@ -23,6 +23,24 @@ function fillCanvas(array) {
      }
    }
 }
+function monitornApplySetChanges(set) {
+  var node = document.getElementById('figPicker');
+  while (node.firstChild) {
+    node.removeChild(node.firstChild);
+  }
+  for (var ind = 0; ind < set.length; ind++) {
+    var fig = document.createElement("canvas");
+    fig.width = 150;
+    fig.height = 150;
+    console.log(set);
+    fig.setAttribute("style",  "grid-column-start:${ind}; grid-row-start: 1");
+    figctx = fig.getContext("2d");
+      for (var j = 0; j < 5; j++) {
+        figctx.fillRect(set[ind][j][0]*30, set[ind][j][1]*30, 29, 29);
+    }
+    node.appendChild(fig);
+  }
+}
 function fillableCellCount(array) {
   count = 0;
   for (var xx = 0; xx < array.length; xx=xx+1) {
