@@ -40,6 +40,7 @@ for (var xx = 0; xx < x; xx=xx+1) {
    } else {
     generateRandomGrid();
   }
+  monitornApplySetChanges(figureSet);
 }
 
 function generateRectGrid() {

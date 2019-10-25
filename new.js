@@ -29,17 +29,39 @@ function monitornApplySetChanges(set) {
     node.removeChild(node.firstChild);
   }
   for (var ind = 0; ind < set.length; ind++) {
+      var offset = 0;
     var fig = document.createElement("canvas");
     fig.width = 150;
     fig.height = 150;
-    console.log(set);
-    fig.setAttribute("style",  "grid-column-start:${ind}; grid-row-start: 1");
+    fig["figmap"] = set[ind];
+    fig.onclick = function() {selectFigure(fig["figmap"])};
     figctx = fig.getContext("2d");
+    for (var j = 0; j < 5; j++) {
+      if (set[ind][j][1]+offset < 0) {
+        offset = offset + 1;
+      }
+    }
       for (var j = 0; j < 5; j++) {
-        figctx.fillRect(set[ind][j][0]*30, set[ind][j][1]*30, 29, 29);
+        figctx.fillRect(set[ind][j][0]*30, (set[ind][j][1]+offset)*30, 29, 29);
     }
     node.appendChild(fig);
   }
+}
+var selectedFigure;
+function selectFigure(figure) {
+selectedFigure = figure;
+}
+function prePlaceFigure(event, figure) {
+  var fl = 0;
+  if (figure != null) {
+  fillCanvas(cellsArray);
+  var xx = Math.floor(event.clientX/cellWidth);
+  var yy = Math.floor(event.clientY/cellHeight);
+  for (var i = 0; i < 5; i++) {
+      fillRectUpd((figure[i][0]+xx)*cellWidth, (figure[i][1]+yy)*cellHeight, cellWidth-1, cellHeight-1, "lightblue");
+
+  }
+}
 }
 function fillableCellCount(array) {
   count = 0;

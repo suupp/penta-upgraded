@@ -3,10 +3,22 @@
   <style>
 body {background-color: powderblue;}
 .wrapper {
-    display: grid;
-    width: 1200px;
-    height: 300px;
-    
+  position: fixed;
+  top: 10%;
+  right: 10%;
+  grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
+  width: 40%;
+  height: 80%;
+}
+.underCanvas {
+  position: absolute;
+  top: 600px;
+}
+#myCanvas {
+  position: absolute;
+  top:0;
+  left:0;
 }
 </style>
   <script type="text/javascript" src="grid.js"></script>
@@ -17,10 +29,8 @@ body {background-color: powderblue;}
 </head>
 <body>
   <div class="wrapper" id="figPicker">
-  <canvas width="150" height="150" style="border:1px solid #000000;">></canvas>
-  <canvas width="150" height="150" style="border:1px solid #000000;">></canvas>
   </div>
-<canvas id="myCanvas" width="600" height="600"></canvas>
+<canvas id="myCanvas" width="600" height="600" onmousemove="prePlaceFigure(event, selectedFigure)" onmouseout="fillCanvas(cellsArray)"></canvas>
 <script type="text/javascript">
    var x = prompt('Enter board width (2 - 15)','');
    var y = prompt('Enter board height (2 - 10)','');
@@ -32,13 +42,12 @@ body {background-color: powderblue;}
 // create a pointer to canvas image (needed for isRectEmpty function)
    var ctx = canvas.getContext("2d");
 // create brick image for static blocks
-
     cellWidth = canvas.width/x;
     cellHeight = canvas.height/y;
 
 
 </script>
-<p>
+<p class="underCanvas">
 <script type="text/javascript">
   generateRandomGrid();
 </script>
@@ -46,7 +55,6 @@ body {background-color: powderblue;}
 <input type="button" value="RESET" onclick="clearGrid(cellsArray, true)">
 <input type="button" value="RANDOM FIELD" onclick="generateRandomGrid()">
 <input type="button" value="PLAIN FIELD" onclick="resetCanvas()">
-<input type="button" value="ay" onclick="monitornApplySetChanges(figureSet)">
 
 </p>
 </body>
