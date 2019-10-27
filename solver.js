@@ -123,6 +123,7 @@ for (i; i < figure.length; i++) {
       }
       figure.length = figure.length - 1;
       figureSet = Array.from(figure);
+      monitornApplySetChanges(figureSet);
       return true;
     }
     fitnum = 0;
@@ -147,6 +148,7 @@ for (k; k >= 0; k--) {
         }
         figure.length = figure.length - 1;
         figureSet = Array.from(figure);
+        monitornApplySetChanges(figureSet);
         return true;
       }
         fitnum = 0;
@@ -195,6 +197,7 @@ for (var i = 0; i < figure[figind].length; i++) {
 function startSolve() {
   figureSet = Array.from(oldFSet);
   oldFSet = Array.from(figureSet);
+  console.log(cellsArray);
 if (!solve()) {
   startSolve();
   }

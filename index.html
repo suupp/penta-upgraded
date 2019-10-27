@@ -30,7 +30,7 @@ body {background-color: powderblue;}
 <body>
   <div class="wrapper" id="figPicker">
   </div>
-<canvas id="myCanvas" width="600" height="600" onmousemove="prePlaceFigure(event, selectedFigure)" onmouseout="fillCanvas(cellsArray)"></canvas>
+<canvas id="myCanvas" width="600" height="600" onmousemove="prePlaceFigure(event, selectedFigure)" onmouseout="fillCanvas(cellsArray)" onclick="placeFigure(event, selectedFigure, selectedind, cellsArray)"></canvas>
 <script type="text/javascript">
    var x = prompt('Enter board width (2 - 15)','');
    var y = prompt('Enter board height (2 - 10)','');

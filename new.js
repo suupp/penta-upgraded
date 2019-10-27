@@ -23,6 +23,36 @@ function fillCanvas(array) {
      }
    }
 }
+function placeFigure(event, figure, ind, array) {
+  var fl = 0;
+  var i = 0;
+  var fitment = 0;
+  var xx = Math.floor(event.clientX/cellWidth);
+  var yy = Math.floor(event.clientY/cellHeight);
+  var color = randomColor();
+  while ((fl == 0) && (i < 5)) {
+    if (xx+figure[i][0] < x && yy+figure[i][1] < y && yy+figure[i][1] >= 0 && xx+figure[i][0] >= 0 && array[figure[i][0]+xx][yy+figure[i][1]] == 1) {
+      fitment = fitment + 1;
+    } else {
+      fl = 1;
+    }
+    i = i + 1;
+  }
+  if (fitment == 5) {
+    for (var i = 0; i < 5; i++) {
+        array[xx+figure[i][0]][yy+figure[i][1]] = color;
+    }
+    for (var some = ind; some < figureSet.length; some++) {
+      figureSet[some] = figureSet[some+1];
+    }
+    figureSet.length = figureSet.length - 1;
+    monitornApplySetChanges(figureSet);
+  }
+  fillCanvas(array);
+}
+function removeFigureFromSet() {
+
+}
 function monitornApplySetChanges(set) {
   var node = document.getElementById('figPicker');
   while (node.firstChild) {
@@ -33,8 +63,10 @@ function monitornApplySetChanges(set) {
     var fig = document.createElement("canvas");
     fig.width = 150;
     fig.height = 150;
-    fig["figmap"] = set[ind];
-    fig.onclick = function() {selectFigure(fig["figmap"])};
+    fig.figind = ind;
+    fig.onclick = function() {
+      selectFigure(set, this.figind);
+  };
     figctx = fig.getContext("2d");
     for (var j = 0; j < 5; j++) {
       if (set[ind][j][1]+offset < 0) {
@@ -46,11 +78,16 @@ function monitornApplySetChanges(set) {
     }
     node.appendChild(fig);
   }
+  selectFigure(set, 0);
 }
+
 var selectedFigure;
-function selectFigure(figure) {
-selectedFigure = figure;
+var selectedind;
+function selectFigure(set, figureind) {
+selectedFigure = set[figureind];
+selectedind = figureind;
 }
+
 function prePlaceFigure(event, figure) {
   var fl = 0;
   if (figure != null) {
